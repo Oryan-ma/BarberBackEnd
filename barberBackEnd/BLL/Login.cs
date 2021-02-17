@@ -13,8 +13,7 @@ namespace barberBackEnd.BLL
 
         public T LoginUser<T>(T type)
         {
-            string password = "";
-            password = getPassword(type, password);
+            string password = getPassword(type);
 
            // T user = db.Login(type);
 
@@ -24,7 +23,7 @@ namespace barberBackEnd.BLL
                 Barber b = db.Login(type) as Barber;
                 if (b.Password == password)
                 {
-                    return type;
+                    return (T)Convert.ChangeType(b, typeof(T));
                 }
             }
             else if (type is Customer)
@@ -32,28 +31,26 @@ namespace barberBackEnd.BLL
                 Customer c = db.Login(type) as Customer;
                 if (c.Password == password)
                 {
-                    return type;
+                    return (T)Convert.ChangeType(c, typeof(T));
                 }
             }
             return default;
 
         }
 
-        private static string getPassword<T>(T type, string password)
+        private static string getPassword<T>(T type)
         {
             if (type is Barber)
             {
                 Barber b = type as Barber;
-                password = b.Password;
+                return b.Password;
             }
             else if (type is Customer)
             {
                 Customer c = type as Customer;
-                password = c.Password;
-
+                return c.Password;
             }
-
-            return password;
+            return null;
         }
     }
 }

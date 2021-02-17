@@ -88,7 +88,8 @@ namespace barberBackEnd.DAL
                         b.Password= (string)dr["Password"];
                         b.Email= (string)dr["Email"];
                     }
-                    break;
+                    return (T)Convert.ChangeType(b,typeof(T));
+                    //break;
                 default:
                     break;
             }
