@@ -11,7 +11,6 @@ namespace barberBackEnd.Models
         public string Name { get; set; }
         public string Last_Name { get; set; }
         public char Gender { get; set; }
-        public City city { get; set; }
         public string Phone { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }

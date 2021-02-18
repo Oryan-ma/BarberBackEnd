@@ -31,10 +31,13 @@ namespace barberBackEnd.DAL
                     command += $"Insert Into barber_tbl (Id,Name,Last_Name,Customer_Gender,city_Id,Phone,Password,Email) " +
                         $"values('{b.Id}','{b.Name}','{b.Last_Name}','{b.Customer_Gender}'," +
                         $"'{b.City.Id}','{b.Phone}','{b.Password}', '{b.Email}')";
-                   
                     break;
-
                 case Customer c:
+                    c = type as Customer;
+                    command += $"Insert Into customer_tbl (Id,Name,Last_Name,Gender,Phone,Password,Email) " +
+                        $"values('{c.Id}','{c.Name}','{c.Last_Name}','{c.Gender}'," +
+                        $"'{c.Phone}','{c.Password}', '{c.Email}')";
+                    break;
                 case Queue q:
                 case City ci:
 
@@ -81,20 +84,20 @@ namespace barberBackEnd.DAL
                         b.Id = (string)dr["Id"];
                         b.Name = (string)dr["Name"];
                         b.Last_Name = (string)dr["Last_Name"];
-                        b.Customer_Gender =Convert.ToChar(dr["Customer_Gender"]);
+                        b.Customer_Gender = Convert.ToChar(dr["Customer_Gender"]);
                         b.City = new City();
-                        b.City.Id= (string)dr["city_Id"];
-                        b.City.Name= (string)dr["city_name"];
-                        b.Password= (string)dr["Password"];
-                        b.Email= (string)dr["Email"];
+                        b.City.Id = (string)dr["city_Id"];
+                        b.City.Name = (string)dr["city_name"];
+                        b.Password = (string)dr["Password"];
+                        b.Email = (string)dr["Email"];
                     }
-                    return (T)Convert.ChangeType(b,typeof(T));
-                    //break;
+                    return (T)Convert.ChangeType(b, typeof(T));
+                //break;
                 default:
                     break;
             }
 
-           
+
             con.Close();
             cmd.Connection.Close();
             return type;

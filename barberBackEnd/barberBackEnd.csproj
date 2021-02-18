@@ -162,8 +162,10 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="BLL\BarberSQL.cs" />
+    <Compile Include="BLL\CustomerSQL.cs" />
     <Compile Include="BLL\Login.cs" />
     <Compile Include="Controllers\BarberController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="DAL\DBService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
