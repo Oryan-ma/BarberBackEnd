@@ -24,9 +24,9 @@ namespace barberBackEnd.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody] Customer c)
+        public Customer Post([FromBody] Customer c)
         {
-            new CustomerSQL().RegisterCustomer(c);
+            return new CustomerSQL().RegisterCustomer(c);
         }
         //LOGIN
         [HttpPost]

@@ -28,16 +28,14 @@ namespace barberBackEnd.DAL
             {
                 case Barber b:
                     b = type as Barber;
-                    b.Id = Guid.NewGuid().ToString("N");
-                    command += $"Insert Into barber_tbl (Id,Name,Last_Name,Customer_Gender,city_Id,Phone,Password,Email) " +
-                        $"values('{b.Id}','{b.Name}','{b.Last_Name}','{b.Customer_Gender}'," +
+                    command += $"Insert Into barber_tbl (Name,Last_Name,Customer_Gender,city_Id,Phone,Password,Email) " +
+                        $"values('{b.Name}','{b.Last_Name}','{b.Customer_Gender}'," +
                         $"'{b.City.Id}','{b.Phone}','{b.Password}', '{b.Email}')";
                     break;
                 case Customer c:
                     c = type as Customer;
-                    c.Id = Guid.NewGuid().ToString("N");
-                    command += $"Insert Into customer_tbl (Id,Name,Last_Name,Gender,Phone,Password,Email) " +
-                        $"values('{c.Id}','{c.Name}','{c.Last_Name}','{c.Gender}'," +
+                    command += $"Insert Into customer_tbl (Name,Last_Name,Gender,Phone,Password,Email) " +
+                        $"values('{c.Name}','{c.Last_Name}','{c.Gender}'," +
                         $"'{c.Phone}','{c.Password}', '{c.Email}')";
                     break;
                 case Queue q:
@@ -83,7 +81,6 @@ namespace barberBackEnd.DAL
                     b = new Barber();
                     if (dr.Read())
                     {   // Read till the end of the data into a row
-                        b.Id = (string)dr["Id"];
                         b.Name = (string)dr["Name"];
                         b.Last_Name = (string)dr["Last_Name"];
                         b.Customer_Gender = Convert.ToChar(dr["Customer_Gender"]);
@@ -98,7 +95,6 @@ namespace barberBackEnd.DAL
                     c = new Customer();
                     if (dr.Read())
                     {   // Read till the end of the data into a row
-                        c.Id = (string)dr["Id"];
                         c.Name = (string)dr["Name"];
                         c.Last_Name = (string)dr["Last_Name"];
                         c.Gender = Convert.ToChar(dr["Gender"]);
