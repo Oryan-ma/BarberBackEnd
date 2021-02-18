@@ -28,12 +28,14 @@ namespace barberBackEnd.DAL
             {
                 case Barber b:
                     b = type as Barber;
+                    b.Id = Guid.NewGuid().ToString("N");
                     command += $"Insert Into barber_tbl (Id,Name,Last_Name,Customer_Gender,city_Id,Phone,Password,Email) " +
                         $"values('{b.Id}','{b.Name}','{b.Last_Name}','{b.Customer_Gender}'," +
                         $"'{b.City.Id}','{b.Phone}','{b.Password}', '{b.Email}')";
                     break;
                 case Customer c:
                     c = type as Customer;
+                    c.Id = Guid.NewGuid().ToString("N");
                     command += $"Insert Into customer_tbl (Id,Name,Last_Name,Gender,Phone,Password,Email) " +
                         $"values('{c.Id}','{c.Name}','{c.Last_Name}','{c.Gender}'," +
                         $"'{c.Phone}','{c.Password}', '{c.Email}')";
@@ -58,15 +60,15 @@ namespace barberBackEnd.DAL
             string query = "";
             switch (type)
             {
-                case Barber bar:
-                    bar = type as Barber;
+                case Barber b:
+                    b = type as Barber;
                     query = $"select * " +
                         $"from barber_tbl b inner join city_tbl c on b.city_id=c.city_id " +
-                        $"where Email='{bar.Email}'";
+                        $"where Email='{b.Email}'";
                     break;
                 case Customer c:
                     c = type as Customer;
-                    query = $"select * from barber_tbl where Email={c.Email}";
+                    query = $"select * from customer_tbl where Email='{c.Email}'";
                     break;
                 default:
                     break;
@@ -92,6 +94,19 @@ namespace barberBackEnd.DAL
                         b.Email = (string)dr["Email"];
                     }
                     return (T)Convert.ChangeType(b, typeof(T));
+                case Customer c:
+                    c = new Customer();
+                    if (dr.Read())
+                    {   // Read till the end of the data into a row
+                        c.Id = (string)dr["Id"];
+                        c.Name = (string)dr["Name"];
+                        c.Last_Name = (string)dr["Last_Name"];
+                        c.Gender = Convert.ToChar(dr["Gender"]);
+                        c.Phone = (string)dr["Phone"];
+                        c.Password = (string)dr["Password"];
+                        c.Email = (string)dr["Email"];
+                    }
+                    return (T)Convert.ChangeType(c, typeof(T));
                 //break;
                 default:
                     break;

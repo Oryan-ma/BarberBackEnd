@@ -28,7 +28,13 @@ namespace barberBackEnd.Controllers
         {
             new CustomerSQL().RegisterCustomer(c);
         }
-
+        //LOGIN
+        [HttpPost]
+        [Route("api/customer/login")]
+        public object Login([FromBody] Customer c)
+        {
+            return new Login().LoginUser(c);
+        }
         // PUT api/<controller>/5
         public void Put(int id, [FromBody] string value)
         {
