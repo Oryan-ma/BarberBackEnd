@@ -81,9 +81,8 @@ namespace barberBackEnd.DAL
                 default:
                     break;
             }
-            con = CreateConnction();
-            cmd = new SqlCommand(query, con);
-            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            SqlDataReader dr;
+            CallSQL(out con, out cmd, query, out dr);
 
             switch (type)
             {
@@ -117,7 +116,7 @@ namespace barberBackEnd.DAL
 
 
             con.Close();
-            cmd.Connection.Close();
+            //cmd.Connection.Close();
             return type;
         }
 
@@ -130,9 +129,8 @@ namespace barberBackEnd.DAL
                 $"from barber_tbl b inner join Services_tbl s on b.Email= s.barber_Id " +
             $"where Email='{email}'";
 
-            con = CreateConnction();
-            cmd = new SqlCommand(query, con);
-            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            SqlDataReader dr;
+            CallSQL(out con, out cmd, query, out dr);
             List<Service> s = new List<Service>();
             while (dr.Read())
             {   // Read till the end of the data into a row
@@ -142,9 +140,18 @@ namespace barberBackEnd.DAL
                 s.Add(ser);
             }
             con.Close();
-            cmd.Connection.Close();
+            //cmd.Connection.Close();
             return s;
         }
+
+        private static void CallSQL(out SqlConnection con, out SqlCommand cmd, string query, out SqlDataReader dr)
+        {
+            con = CreateConnction();
+            cmd = new SqlCommand(query, con);
+            dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+        }
+
         public static SqlConnection connect(String conString)
         {
             // read the connection string from the configuration file
