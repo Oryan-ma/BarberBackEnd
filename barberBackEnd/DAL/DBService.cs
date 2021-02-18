@@ -28,9 +28,9 @@ namespace barberBackEnd.DAL
             {
                 case Barber b:
                     b = type as Barber;
-                    command += $"Insert Into barber_tbl (Name,Last_Name,Customer_Gender,city_Id,Phone,Password,Email) " +
+                    command += $"Insert Into barber_tbl (Name,Last_Name,Customer_Gender,Phone,Password,Email) " +
                         $"values('{b.Name}','{b.Last_Name}','{b.Customer_Gender}'," +
-                        $"'{b.City.Id}','{b.Phone}','{b.Password}', '{b.Email}')";
+                        $"'{b.Phone}','{b.Password}', '{b.Email}')";
                     break;
                 case Customer c:
                     c = type as Customer;
@@ -38,14 +38,24 @@ namespace barberBackEnd.DAL
                         $"values('{c.Name}','{c.Last_Name}','{c.Gender}'," +
                         $"'{c.Phone}','{c.Password}', '{c.Email}')";
                     break;
+                case List<Service> s:
+                    if (s.Count > 0)
+                    {
+                        command += "insert into Services_tbl (Barber_Id,Service_Name,Service_Price) values";
+                        for (int i = 0; i < s.Count; i++)
+                        {
+                            command += $"('{s[i].Barber_Email}','{s[i].Service_Name}',{s[i].Service_Price}),";
+                        }
+                        command = command.Remove(command.Length - 1);
+                    }
+                    break;
                 case Queue q:
-                case City ci:
 
                 default:
                     break;
             }
             con = CreateConnction();
-            cmd = CreateCommand(command, con);             // create the command
+            cmd = CreateCommand(command, con);
             ExeSQLCommand(cmd, con);
 
             return 1;
@@ -61,7 +71,7 @@ namespace barberBackEnd.DAL
                 case Barber b:
                     b = type as Barber;
                     query = $"select * " +
-                        $"from barber_tbl b inner join city_tbl c on b.city_id=c.city_id " +
+                        $"from barber_tbl " +
                         $"where Email='{b.Email}'";
                     break;
                 case Customer c:
@@ -73,8 +83,8 @@ namespace barberBackEnd.DAL
             }
             con = CreateConnction();
             cmd = new SqlCommand(query, con);
-
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
             switch (type)
             {
                 case Barber b:
@@ -84,9 +94,6 @@ namespace barberBackEnd.DAL
                         b.Name = (string)dr["Name"];
                         b.Last_Name = (string)dr["Last_Name"];
                         b.Customer_Gender = Convert.ToChar(dr["Customer_Gender"]);
-                        b.City = new City();
-                        b.City.Id = (string)dr["city_Id"];
-                        b.City.Name = (string)dr["city_name"];
                         b.Password = (string)dr["Password"];
                         b.Email = (string)dr["Email"];
                     }
@@ -112,6 +119,31 @@ namespace barberBackEnd.DAL
             con.Close();
             cmd.Connection.Close();
             return type;
+        }
+
+        public List<Service> GetServices(string email)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            string query = "";
+            query = $"select * " +
+                $"from barber_tbl b inner join Services_tbl s on b.Email= s.barber_Id " +
+            $"where Email='{email}'";
+
+            con = CreateConnction();
+            cmd = new SqlCommand(query, con);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            List<Service> s = new List<Service>();
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Service ser = new Service();
+                ser.Service_Name = (string)dr["Service_Name"];
+                ser.Service_Price = double.Parse(dr["Service_Price"].ToString());
+                s.Add(ser);
+            }
+            con.Close();
+            cmd.Connection.Close();
+            return s;
         }
         public static SqlConnection connect(String conString)
         {

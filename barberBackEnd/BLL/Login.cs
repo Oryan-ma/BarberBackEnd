@@ -23,6 +23,7 @@ namespace barberBackEnd.BLL
                 Barber b = db.Login(type) as Barber;
                 if (b.Password == password)
                 {
+                    b.Services = db.GetServices(b.Email);
                     return (T)Convert.ChangeType(b, typeof(T));
                 }
             }

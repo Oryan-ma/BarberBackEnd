@@ -5,11 +5,10 @@ using System.Web;
 
 namespace barberBackEnd.Models
 {
-    public class Queue
+    public class Service
     {
         public string Barber_Email { get; set; }
-        public string Customer_Email { get; set; }
-        public DateTime time { get; set; }
-
+        public string Service_Name { get; set; }
+        public double Service_Price { get; set; }
     }
 }
