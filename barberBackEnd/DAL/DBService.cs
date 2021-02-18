@@ -60,6 +60,46 @@ namespace barberBackEnd.DAL
 
             return 1;
         }
+        //to chek
+        public List<ShopQueue> GetShopQueue()
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            string query = "";
+            query = $"select * from queue_tbl";
+
+            SqlDataReader dr;
+            CallSQL(out con, out cmd, query, out dr);
+            List<ShopQueue> s = new List<ShopQueue>();
+
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                ShopQueue sq = new ShopQueue();
+                ReadQueue(dr, sq);
+                s.Add(sq);
+            }
+            con.Close();
+            //cmd.Connection.Close();
+            return s;
+        }
+        //todo
+
+        public void RemoveAppointmentFromQueue()
+        {
+
+        }
+        //todo
+        public void Add2Queue(ShopQueue sq)
+        {
+
+        }
+        private static void ReadQueue(SqlDataReader dr, ShopQueue sq)
+        {
+            sq.Barber_Email = (string)dr["Barber_Email"];
+            sq.Customer_Email = (string)dr["Customer_Email"];
+            sq.time = (DateTime)dr["Queue_time"];
+        }
 
         public T Login<T>(T type)
         {
@@ -90,23 +130,14 @@ namespace barberBackEnd.DAL
                     b = new Barber();
                     if (dr.Read())
                     {   // Read till the end of the data into a row
-                        b.Name = (string)dr["Name"];
-                        b.Last_Name = (string)dr["Last_Name"];
-                        b.Customer_Gender = Convert.ToChar(dr["Customer_Gender"]);
-                        b.Password = (string)dr["Password"];
-                        b.Email = (string)dr["Email"];
+                        ReadBarber(dr, b);
                     }
                     return (T)Convert.ChangeType(b, typeof(T));
                 case Customer c:
                     c = new Customer();
                     if (dr.Read())
                     {   // Read till the end of the data into a row
-                        c.Name = (string)dr["Name"];
-                        c.Last_Name = (string)dr["Last_Name"];
-                        c.Gender = Convert.ToChar(dr["Gender"]);
-                        c.Phone = (string)dr["Phone"];
-                        c.Password = (string)dr["Password"];
-                        c.Email = (string)dr["Email"];
+                        ReadCustomer(dr, c);
                     }
                     return (T)Convert.ChangeType(c, typeof(T));
                 //break;
@@ -118,6 +149,25 @@ namespace barberBackEnd.DAL
             con.Close();
             //cmd.Connection.Close();
             return type;
+        }
+
+        private static void ReadBarber(SqlDataReader dr, Barber b)
+        {
+            b.Name = (string)dr["Name"];
+            b.Last_Name = (string)dr["Last_Name"];
+            b.Customer_Gender = Convert.ToChar(dr["Customer_Gender"]);
+            b.Password = (string)dr["Password"];
+            b.Email = (string)dr["Email"];
+        }
+
+        private static void ReadCustomer(SqlDataReader dr, Customer c)
+        {
+            c.Name = (string)dr["Name"];
+            c.Last_Name = (string)dr["Last_Name"];
+            c.Gender = Convert.ToChar(dr["Gender"]);
+            c.Phone = (string)dr["Phone"];
+            c.Password = (string)dr["Password"];
+            c.Email = (string)dr["Email"];
         }
 
         public List<Service> GetServices(string email)

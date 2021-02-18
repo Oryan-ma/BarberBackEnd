@@ -164,16 +164,18 @@
     <Compile Include="BLL\BarberSQL.cs" />
     <Compile Include="BLL\CustomerSQL.cs" />
     <Compile Include="BLL\Login.cs" />
+    <Compile Include="BLL\ShopQueueSQL.cs" />
     <Compile Include="Controllers\BarberController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="DAL\DBService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Barber.cs" />
     <Compile Include="Models\Customer.cs" />
-    <Compile Include="Models\Queue.cs" />
     <Compile Include="Models\Service.cs" />
+    <Compile Include="Models\ShopQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
