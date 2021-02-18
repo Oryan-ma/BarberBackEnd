@@ -1,214 +1,141 @@
+<!-- Title -->
 
-# React Native
+<p align="center">
+  <a href="https://github.com/expo/examples">
+    <img src="./.gh-assets/header.png" height="128">
+    <h1 align="center">Create React Native App</h1>
+  </a>
+</p>
 
-Our first React Native implementation is `ReactKit`, targeting iOS.  We are also
-working on an Android implementation which we will release later.  `ReactKit`
-apps are built using the [React JS](https://github.com/facebook/react) framework, and render directly to
-native UIKit elements using a fully asynchronous architecture.  There is no
-browser and no HTML. We have picked what we think is the best set of features
-from these and other technologies to build what we hope to become the best
-product development framework available, with an emphasis on iteration speed,
-developer delight, continuity of technology, and absolutely beautiful and fast
-products with no compromises in quality or capability.
+<!-- Header -->
 
-## Requirements
+<p align="center">
+  <b>The fastest way to create universal React Native apps</b>
+  <br />
 
-1. OS X - This repo only contains the iOS implementation right now, and Xcode only runs on Mac.
-2. New to Xcode?  [Download it](https://developer.apple.com/xcode/downloads/) from the Mac App Store.
-3. [Homebrew](http://brew.sh/) is the recommended way to install node, watchman, and flow.
-4. New to node or npm? `brew install node`
-5. We recommend installing [watchman](https://facebook.github.io/watchman/docs/install.html), otherwise you might hit a node file watching bug.  `brew install watchman`
-6. If you want to use [flow](http://www.flowtype.org), `brew install flow`
+  <p align="center">
+    <!-- iOS -->
+    <img alt="Supports Expo iOS" longdesc="Supports Expo iOS" src="https://img.shields.io/badge/iOS-000.svg?style=flat-square&logo=APPLE&labelColor=999999&logoColor=fff" />
+    <!-- Android -->
+    <img alt="Supports Expo Android" longdesc="Supports Expo Android" src="https://img.shields.io/badge/Android-000.svg?style=flat-square&logo=ANDROID&labelColor=A4C639&logoColor=fff" />
+    <!-- Web -->
+    <img alt="Supports Expo Web" longdesc="Supports Expo Web" src="https://img.shields.io/badge/web-000.svg?style=flat-square&logo=GOOGLE-CHROME&labelColor=4285F4&logoColor=fff" />
+  </p>
+  <p align="center">
+    <a href="https://packagephobia.now.sh/result?p=create-react-native-app">
+      <img alt="the best way to bootstrap a react native app" longdesc="the best way to create a react native app" src="https://flat.badgen.net/packagephobia/install/create-react-native-app" />
+    </a>
+  </p>
+  
+</p>
 
-## Quick start
+<!-- Body -->
 
-Get up and running with our Movies sample app:
-
-1. Once you have the repo cloned and met all the requirements above, start the
-packager that will transform your JS code on-the-fly:
-```
-npm install
-npm start
-```
-2. Open the `Examples/Movies/Movies.xcodeproj` project in Xcode.
-3. Make sure the target is set to `Movies` and that you have an iOS simulator
-selected to run the app.
-4. Build and run the project with the Xcode run button.
-
-You should now see the Movies app running on your iOS simulator.
-Congratulations!  You've just successfully run your first React Native app.
-
-Now try editing a JavaScript file and viewing your changes. Let's change the
-movie search placeholder text:
-
-1. Open the `Examples/Movies/SearchScreen.js` file in your favorite JavaScript
-editor.
-2. Look for the current search placeholder text and change it to "Search for an
-awesome movie...".
-3. Hit cmd+R ([twice](http://openradar.appspot.com/19613391)) in your iOS simulator to reload the app and see your change.
-If you don't immediately see your changes, try restarting your app within Xcode.
-
-Feel free to browse the Movies sample files and customize various properties to
-get familiar with the codebase and React Native.
-
-Also check out the UI Component Explorer for more sample code:
-`Examples/UIExplorer/UIExplorer.xcodeproj`.  **Make sure to stop any running apps
-before running a new one or Xcode might hang.**
-
-## Troubleshooting
-
-If Xcode hangs, force kill it with the activity monitor.  This sometimes happens
-if you try to run another app without manually stopping the previous one first.
-
-Jest testing does not yet work on node versions after 0.10.x.
-
-You can verify the packager is working by loading the [bundle](http://localhost:8081/Examples/Movies/MoviesApp.includeRequire.runModule.bundle) in your browser and
-inspecting the contents.
-
-You might see weird npm install errors - we recommend uninstalling and
-reinstalling node and other software with brew instead.
-
-Please report any other issues you encounter so we can fix them ASAP.
-
-## Basics
-
-`<View>` is a container that behaves similar to a `<div>` element on web, but
-renders to a `UIView`.  `<Text>`, `<Image>`, and `<ScrollView>` are other basic
-components and there are several more.  You can compose these elements into
-component trees just like normal react or HTML elements, and they can be styled
-with the `style` property, which supports a subset of flexbox layout.  Check out
-the UIExplorer examples for more [sample code](https://github.com/facebook/react-native/blob/master/Examples/UIExplorer/ScrollViewExample.js).
-
-Native events come in as you would expect via `onChange`, `onScroll`, `onTouch`
-and other props. `TouchableHighlight` makes it really easy to build nice buttons
-via `onPress`, which plays nicely with scroll views and other interactions via
-the responder system.
-
-# FAQ
-
-Q. How does debugging work?  Can I set breakpoints in my JS?
-A. We are going to add the ability to use the Chrome developer tools soon.  We
-are very passionate about building the best possible developer experience.
-
-Q. When is this coming to Android/Windows/OS X/etc?
-A. We're working on Android, and we are excited to release it as soon as we can.
-We are looking forward to the community helping us target other platforms as
-well :)
-
-Q. How do I create my own app?
-A. Copy the entire `Examples/TicTacToe` folder, rename stuff in Xcode, and
-replace the `TicTacToeApp.js` with your own. Then, in `AppDelegate.m`, update
-`moduleName` to match your call to
-`Bundler.registerComponent(<moduleName>, <componentName>)` at the bottom of your
-JS file, and update `jsCodeLocation` to match your JS file name and location.
-
-Q. Can I submit my own React Native app to the App Store?
-A. Not yet, but you will be able to soon.  If you build something you want to
-submit to the App Store, come talk to us ASAP.
-
-Q. How do I deploy to my device?
-A. You can change `localhost` in `AppDelegate.m` to your laptop's IP address and
-grab the bundle over the same Wi-Fi network.  You can also download the bundle
-that the React packager generates, save it to the file `main.jsbundle`, and add it
-as a static resource in your Xcode project. Then set the `jsCodeLocation` in
-`AppDelegate.m` to point to that file and deploy to your device like you would
-any other app.
-
-Q. What's up with this private repo?  Why aren't you just open sourcing it now?
-A. We want input from the React community before we open the floodgates so we
-can incorporate your feedback, and we also have a bunch more features we want to
-add to make a more complete offering before we open source.
-
-Q. Do you have to ship a JS runtime with your apps?
-A. No, we just use the JavaScriptCore public API that is part of iOS 7 and
-later.
-
-Q. How do I add more native capabilities?
-A. React Native is designed to be extensible - come talk to us, we would love to
-work with you.
-
-Q. Can I reuse existing iOS code?
-A. Yes, React Native is designed to be extensible and allow integration of all
-sorts of native components, such as `UINavigationController` (available as
-`<NavigatorIOS>`), `MKMapView` (not available yet), or your own custom
-component.  Check out `RCTUIActivityIndicatorViewManager.m` for a simple
-example.
-
-# In Depth
-
-React renders these component trees as normal, but instead of applying the
-result to the DOM, it sends a batch of create, update, and delete commands for
-native views.  Everything in the React tree ultimately composes down to core
-components that are mapped to their native counterpart.  The diff is first
-applied to the shadow tree where layout is calculated in a background thread,
-then the minimal changeset is applied to the native views on the main thread.
-
-There are two key elements to making these apps feel great.  The first is the
-100% asynchronous communication between the native engine and JS application
-code.  This means that slow JS operations never block the main thread, so the
-app can always be responsive to scrolling, image loading, and the like.  Second
-is the powerful bridging API that let's us wrap any native components and APIs
-we want, allowing us to use the native navigation system, tab bar, maps, blurs,
-or any other existing native components standard on the platform, from another
-open source project, or custom built.  These deep hooks also allow us to do very
-high fidelity touch processing, capable of driving continuous gesture feedback
-and animations at 60 fps.
-
-Beyond performance, there are some exciting new concepts that make the
-development experience a delight:
-
-+ React JS - React is a unique and powerful way to structure apps that makes
-them easier to reason about, and thus develop more quickly with fewer bugs.
-React Native takes the same core React engine with JSX and ES6 and plugs
-straight into the native view layer.  Some React components and most JS
-libraries can easily be reused.
-+ Instant reload - See the effect of your changes right away without compiling.
-the React packager efficiently transforms, bundles, caches, and serves your
-source code seamlessly.
-+ `StyleSheet` - A simplifying evolution of CSS.  `padding`, `margin`,
-`position: 'absolute'`, `left`, `right`...the list of support attributes goes on,
-but no more selectors or complex precedence rules - `StyleSheet`s [are just JS](https://speakerdeck.com/vjeux/react-css-in-js),
-and can be merged, shared, and manipulated just like any other JS object.
-+ Flexbox layout - Views stack up based on the flex direction of their parent,
-and can be configured to wrap tightly around their children, expand to fill
-their parent container, or something more custom.  The layout algorithm runs
-asynchronously as well, so scrolling and other animations can stay buttery
-smooth, even while computing complex layout.
-+ Responder events - Get that perfect touch interaction, even with extremely
-complex, hierarchical trees of components.
-+ Component Library - `TouchableHighlight`, `ListView`, `TextInput`, and more
-provide a powerful library of pre-built, high quality components you can easily
-drop into your apps.  Check out `Examples/UIExplorer/UIExplorer.xcodeproj` to
-see example usage.
-
-React Native is not in any way the first step to building a write-once, run-
-anywhere solution.  One goal is simply to unify the developer experience, so
-that a developer does not need to become a deep expert in every different
-platform they want to deploy to - the future vision is for the development
-tools, concepts, frameworks, programming language, and many of the APIs to be as
-similar as possible across the web, iOS, Android, and maybe more, without
-compromising app quality on any platform.
-
-## Testing
-
-Run example app tests with:
-
-```
-npm test
+```sh
+npx create-react-native-app
 ```
 
-Note: Jest testing does not yet work on node versions after 0.10.x.
+Once you're up and running with Create React Native App, visit [this tutorial](https://reactnative.dev/docs/tutorial) for more information on building mobile apps with React.
 
-## Static Analysis
+<p align="center">
+  <img align="center" alt="Product: demo" src="./.gh-assets/crna.gif" />
+</p>
 
-Lint the example apps with:
+## Features
 
-```
-npm run lint
-```
+- Native project ready to be built on to your device.
+- Support for unimodules and auto-linking.
+- OTA updates, and Gestures out of the box.
+- Full support for React Native web.
+- Plug-n-play custom templates.
+- Works with the Expo Client app.
 
-If you have [flow](http://flowtype.org) (version 0.1.6+) installed, you can do type analysis by running:
+## Usage
 
-```
-flow
-```
+- `npx create-react-native-app` Create a new native React app.
+- `yarn ios` -- (`react-native run-ios`) Build the iOS App (requires a MacOS computer).
+- `yarn android` -- (`react-native run-android`) Build the Android App.
+- `yarn web` -- (`expo start:web`) Run the website in your browser.
+
+### Templates
+
+By default you create a [bare-workflow React](https://docs.expo.io/bare/exploring-bare-workflow/) project with support for iOS, Android, and web. You can opt to use an example project instead by selecting the "Templates from ..." option. Custom templates can be used with `--template <Example Name or GitHub URL>` option.
+
+- Use an [example](https://github.com/expo/examples): `npx create-react-native-app -t with-typescript`
+- Use a custom template: `npx create-react-native-app --template https://github.com/someone/my-react-starter` -- Only works with GitHub repos on the master branch.
+- All examples can be modified in the [expo/examples](https://github.com/expo/examples) repo.
+
+## Sections
+
+- [Usage with Expo Client App](#usage-with-expo-client-app)
+- [Support and Contact](#support-and-contact)
+- [FAQs](#faqs)
+- [Contributing](#contributing)
+
+## Usage with Expo Client App
+
+Expo Client enables you to work with all of the [Components and APIs](https://facebook.github.io/react-native/docs/getting-started) in `react-native`, as well as the [JavaScript APIs](https://docs.expo.io/versions/latest) that the are bundled with the Expo App.
+
+Expo Client supports running any project that doesn't have custom native modules added.
+
+- Download the "Expo Client" app from the Play Store or App Store.
+- Start your project with Expo
+  - Install the CLI `npm i -g expo-cli`
+  - Start the project `expo start`
+- Open the project:
+  - Sign in to expo and the project will appear in the app.
+  - Or point your phone's camera at the QR code in the terminal (press "c" to view it).
+
+## Support and Contact
+
+If you're having issues with Create React Native App, please make sure:
+
+- The issue is not covered in the [Expo Docs](https://docs.expo.io/versions/latest/)
+- There is not already an [open issue](https://github.com/expo/expo-cli/issues) for your particular problem
+
+If you've checked the documentation and currently open issues, please either [open a new GitHub issue](https://github.com/expo/create-react-native-app/issues/new) or ask a question on [Expo forums](https://forums.expo.io/c/help).
+
+## Contributing
+
+Please see [Contributing guide](https://github.com/expo/expo-cli/blob/master/CONTRIBUTING.md) in the Expo CLI monorepo for instructions on contributing to Expo CLI.
+
+### Attribution
+
+The examples feature was inspired by the `templates` system of [create-next-app](https://github.com/zeit/next.js/tree/canary/packages/create-next-app) by the [Vercel](https://vercel.com/) team.
+
+## Related
+
+- [Ignite CLI](https://github.com/infinitered/ignite) by [Infinite Red](https://infinite.red/)
+- [Expo CLI](https://github.com/expo/expo-cli) by [Expo team](https://expo.io)
+- [React Native Community CLI](https://github.com/react-native-community/cli) by members of [the React Native community](https://github.com/orgs/react-native-community/people)
+
+<!-- Footer -->
+
+## Contributors ✨
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://twitter.com/baconbrix"><img src="https://avatars1.githubusercontent.com/u/9664363?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Evan Bacon</b></sub></a><br /><a href="https://github.com/expo/create-react-native-app/commits?author=EvanBacon" title="Code">💻</a> <a href="https://github.com/expo/create-react-native-app/commits?author=EvanBacon" title="Documentation">📖</a> <a href="#design-EvanBacon" title="Design">🎨</a> <a href="#maintenance-EvanBacon" title="Maintenance">🚧</a> <a href="https://github.com/expo/create-react-native-app/pulls?q=is%3Apr+reviewed-by%3AEvanBacon" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://expo.io"><img src="https://avatars2.githubusercontent.com/u/90494?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Brent Vatne</b></sub></a><br /><a href="https://github.com/expo/create-react-native-app/commits?author=brentvatne" title="Code">💻</a> <a href="https://github.com/expo/create-react-native-app/commits?author=brentvatne" title="Documentation">📖</a> <a href="https://github.com/expo/create-react-native-app/pulls?q=is%3Apr+reviewed-by%3Abrentvatne" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="http://hamzah"><img src="https://avatars0.githubusercontent.com/u/26879042?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Hamza Halilovic</b></sub></a><br /><a href="https://github.com/expo/create-react-native-app/commits?author=hamzahalilovic" title="Code">💻</a></td>
+    <td align="center"><a href="https://bycedric.com"><img src="https://avatars2.githubusercontent.com/u/1203991?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Cedric van Putten</b></sub></a><br /><a href="https://github.com/expo/create-react-native-app/commits?author=byCedric" title="Code">💻</a></td>
+    <td align="center"><a href="https://twitter.com/VilleImmonen"><img src="https://avatars3.githubusercontent.com/u/497214?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ville Immonen</b></sub></a><br /><a href="https://github.com/expo/create-react-native-app/commits?author=fson" title="Code">💻</a> <a href="https://github.com/expo/create-react-native-app/pulls?q=is%3Apr+reviewed-by%3Afson" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/friederbluemle"><img src="https://avatars0.githubusercontent.com/u/743291?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Frieder Bluemle</b></sub></a><br /><a href="https://github.com/expo/create-react-native-app/commits?author=friederbluemle" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
