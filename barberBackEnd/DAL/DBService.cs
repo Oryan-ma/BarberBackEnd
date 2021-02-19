@@ -49,8 +49,11 @@ namespace barberBackEnd.DAL
                         command = command.Remove(command.Length - 1);
                     }
                     break;
-                case Queue q:
-
+                case ShopQueue sq:
+                    sq = type as ShopQueue;
+                    command += $"insert into ShopQueue_tbl (Barber_Email, Customer_Email,time) values " +
+                        $"('{sq.Barber_Email}','{sq.Customer_Email}','{sq.time.ToString("yyyy-MM-dd HH:mm:ss.fff")}')";
+                    break;
                 default:
                     break;
             }
@@ -60,6 +63,9 @@ namespace barberBackEnd.DAL
 
             return 1;
         }
+
+      
+
         //to chek
         public List<ShopQueue> GetShopQueue()
         {
@@ -67,7 +73,7 @@ namespace barberBackEnd.DAL
             SqlCommand cmd;
 
             string query = "";
-            query = $"select * from queue_tbl";
+            query = $"select * from ShopQueue_tbl order by time";
 
             SqlDataReader dr;
             CallSQL(out con, out cmd, query, out dr);
@@ -85,20 +91,24 @@ namespace barberBackEnd.DAL
         }
         //todo
 
-        public void RemoveAppointmentFromQueue()
+        public void RemoveFromQueue(ShopQueue sq)
         {
-
-        }
-        //todo
-        public void Add2Queue(ShopQueue sq)
-        {
+            SqlConnection con;
+            SqlCommand cmd;
+            string command = $"delete from ShopQueue_tbl " +
+                $"where Barber_Email = '{sq.Barber_Email}' and " +
+                $"Customer_Email = '{sq.Customer_Email}' and " +
+                $"time = '{sq.time.ToString("yyyy-MM-dd HH:mm:ss.fff")}'";
+            con = CreateConnction();
+            cmd = CreateCommand(command, con);
+            ExeSQLCommand(cmd, con);
 
         }
         private static void ReadQueue(SqlDataReader dr, ShopQueue sq)
         {
             sq.Barber_Email = (string)dr["Barber_Email"];
             sq.Customer_Email = (string)dr["Customer_Email"];
-            sq.time = (DateTime)dr["Queue_time"];
+            sq.time = (DateTime)dr["time"];
         }
 
         public T Login<T>(T type)

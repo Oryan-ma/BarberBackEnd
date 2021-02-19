@@ -16,11 +16,11 @@ namespace barberBackEnd.BLL
         }
         public void Add2Queue(ShopQueue sq)
         {
-            db.Add2Queue(sq);
+            db.Insert2DB(sq);
         }
-        public void RemoveAppointmentFromQueue(ShopQueue sq)
+        public void RemoveFromQueue(ShopQueue sq)
         {
-            db.RemoveAppointmentFromQueue();
+            db.RemoveFromQueue(sq);
         }
     }
 }
