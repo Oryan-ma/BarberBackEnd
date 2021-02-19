@@ -28,9 +28,9 @@ namespace barberBackEnd.DAL
             {
                 case Barber b:
                     b = type as Barber;
-                    command += $"Insert Into barber_tbl (Name,Last_Name,Customer_Gender,city_Id,Phone,Password,Email) " +
+                    command += $"Insert Into barber_tbl (Name,Last_Name,Customer_Gender,Phone,Password,Email) " +
                         $"values('{b.Name}','{b.Last_Name}','{b.Customer_Gender}'," +
-                        $"'{b.City.Id}','{b.Phone}','{b.Password}', '{b.Email}')";
+                        $"'{b.Phone}','{b.Password}', '{b.Email}')";
                     break;
                 case Customer c:
                     c = type as Customer;
@@ -38,17 +38,77 @@ namespace barberBackEnd.DAL
                         $"values('{c.Name}','{c.Last_Name}','{c.Gender}'," +
                         $"'{c.Phone}','{c.Password}', '{c.Email}')";
                     break;
-                case Queue q:
-                case City ci:
-
+                case List<Service> s:
+                    if (s.Count > 0)
+                    {
+                        command += "insert into Services_tbl (Barber_Id,Service_Name,Service_Price) values";
+                        for (int i = 0; i < s.Count; i++)
+                        {
+                            command += $"('{s[i].Barber_Email}','{s[i].Service_Name}',{s[i].Service_Price}),";
+                        }
+                        command = command.Remove(command.Length - 1);
+                    }
+                    break;
+                case ShopQueue sq:
+                    sq = type as ShopQueue;
+                    command += $"insert into ShopQueue_tbl (Barber_Email, Customer_Email,time) values " +
+                        $"('{sq.Barber_Email}','{sq.Customer_Email}','{sq.time.ToString("yyyy-MM-dd HH:mm:ss.fff")}')";
+                    break;
                 default:
                     break;
             }
             con = CreateConnction();
-            cmd = CreateCommand(command, con);             // create the command
+            cmd = CreateCommand(command, con);
             ExeSQLCommand(cmd, con);
 
             return 1;
+        }
+
+      
+
+        //to chek
+        public List<ShopQueue> GetShopQueue()
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            string query = "";
+            query = $"select * from ShopQueue_tbl order by time";
+
+            SqlDataReader dr;
+            CallSQL(out con, out cmd, query, out dr);
+            List<ShopQueue> s = new List<ShopQueue>();
+
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                ShopQueue sq = new ShopQueue();
+                ReadQueue(dr, sq);
+                s.Add(sq);
+            }
+            con.Close();
+            //cmd.Connection.Close();
+            return s;
+        }
+        //todo
+
+        public void RemoveFromQueue(ShopQueue sq)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            string command = $"delete from ShopQueue_tbl " +
+                $"where Barber_Email = '{sq.Barber_Email}' and " +
+                $"Customer_Email = '{sq.Customer_Email}' and " +
+                $"time = '{sq.time.ToString("yyyy-MM-dd HH:mm:ss.fff")}'";
+            con = CreateConnction();
+            cmd = CreateCommand(command, con);
+            ExeSQLCommand(cmd, con);
+
+        }
+        private static void ReadQueue(SqlDataReader dr, ShopQueue sq)
+        {
+            sq.Barber_Email = (string)dr["Barber_Email"];
+            sq.Customer_Email = (string)dr["Customer_Email"];
+            sq.time = (DateTime)dr["time"];
         }
 
         public T Login<T>(T type)
@@ -61,7 +121,7 @@ namespace barberBackEnd.DAL
                 case Barber b:
                     b = type as Barber;
                     query = $"select * " +
-                        $"from barber_tbl b inner join city_tbl c on b.city_id=c.city_id " +
+                        $"from barber_tbl " +
                         $"where Email='{b.Email}'";
                     break;
                 case Customer c:
@@ -71,36 +131,23 @@ namespace barberBackEnd.DAL
                 default:
                     break;
             }
-            con = CreateConnction();
-            cmd = new SqlCommand(query, con);
+            SqlDataReader dr;
+            CallSQL(out con, out cmd, query, out dr);
 
-            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
             switch (type)
             {
                 case Barber b:
                     b = new Barber();
                     if (dr.Read())
                     {   // Read till the end of the data into a row
-                        b.Name = (string)dr["Name"];
-                        b.Last_Name = (string)dr["Last_Name"];
-                        b.Customer_Gender = Convert.ToChar(dr["Customer_Gender"]);
-                        b.City = new City();
-                        b.City.Id = (string)dr["city_Id"];
-                        b.City.Name = (string)dr["city_name"];
-                        b.Password = (string)dr["Password"];
-                        b.Email = (string)dr["Email"];
+                        ReadBarber(dr, b);
                     }
                     return (T)Convert.ChangeType(b, typeof(T));
                 case Customer c:
                     c = new Customer();
                     if (dr.Read())
                     {   // Read till the end of the data into a row
-                        c.Name = (string)dr["Name"];
-                        c.Last_Name = (string)dr["Last_Name"];
-                        c.Gender = Convert.ToChar(dr["Gender"]);
-                        c.Phone = (string)dr["Phone"];
-                        c.Password = (string)dr["Password"];
-                        c.Email = (string)dr["Email"];
+                        ReadCustomer(dr, c);
                     }
                     return (T)Convert.ChangeType(c, typeof(T));
                 //break;
@@ -110,9 +157,61 @@ namespace barberBackEnd.DAL
 
 
             con.Close();
-            cmd.Connection.Close();
+            //cmd.Connection.Close();
             return type;
         }
+
+        private static void ReadBarber(SqlDataReader dr, Barber b)
+        {
+            b.Name = (string)dr["Name"];
+            b.Last_Name = (string)dr["Last_Name"];
+            b.Customer_Gender = Convert.ToChar(dr["Customer_Gender"]);
+            b.Password = (string)dr["Password"];
+            b.Email = (string)dr["Email"];
+        }
+
+        private static void ReadCustomer(SqlDataReader dr, Customer c)
+        {
+            c.Name = (string)dr["Name"];
+            c.Last_Name = (string)dr["Last_Name"];
+            c.Gender = Convert.ToChar(dr["Gender"]);
+            c.Phone = (string)dr["Phone"];
+            c.Password = (string)dr["Password"];
+            c.Email = (string)dr["Email"];
+        }
+
+        public List<Service> GetServices(string email)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            string query = "";
+            query = $"select * " +
+                $"from barber_tbl b inner join Services_tbl s on b.Email= s.barber_Id " +
+            $"where Email='{email}'";
+
+            SqlDataReader dr;
+            CallSQL(out con, out cmd, query, out dr);
+            List<Service> s = new List<Service>();
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Service ser = new Service();
+                ser.Service_Name = (string)dr["Service_Name"];
+                ser.Service_Price = double.Parse(dr["Service_Price"].ToString());
+                s.Add(ser);
+            }
+            con.Close();
+            //cmd.Connection.Close();
+            return s;
+        }
+
+        private static void CallSQL(out SqlConnection con, out SqlCommand cmd, string query, out SqlDataReader dr)
+        {
+            con = CreateConnction();
+            cmd = new SqlCommand(query, con);
+            dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+        }
+
         public static SqlConnection connect(String conString)
         {
             // read the connection string from the configuration file

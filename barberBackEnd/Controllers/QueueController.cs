@@ -1,5 +1,4 @@
 ﻿using barberBackEnd.BLL;
-using barberBackEnd.DAL;
 using barberBackEnd.Models;
 using System;
 using System.Collections.Generic;
@@ -10,12 +9,12 @@ using System.Web.Http;
 
 namespace barberBackEnd.Controllers
 {
-    public class BarberController : ApiController
+    public class QueueController : ApiController
     {
         // GET api/<controller>
-        public IEnumerable<string> Get()
+        public List<ShopQueue> Get()
         {
-            return new string[] { "value1", "value2" };
+            return  new ShopQueueSQL().GetAllQueues();
         }
 
         // GET api/<controller>/5
@@ -25,25 +24,20 @@ namespace barberBackEnd.Controllers
         }
 
         // POST api/<controller>
-        public Barber Post(Barber barber)
+        public void Post([FromBody] ShopQueue sq)
         {
-            return new BarberSQL().RegisterBarber(barber);
+            new ShopQueueSQL().Add2Queue(sq);
         }
-        //LOGIN
-        [HttpPost]
-        [Route("api/barber/login")]
-        public object Login([FromBody] Barber b)
-        {
-            return new Login().LoginUser(b);
-        }
+
         // PUT api/<controller>/5
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public void Delete([FromBody] ShopQueue sq)
         {
+            new ShopQueueSQL().RemoveFromQueue(sq);
         }
     }
 }
