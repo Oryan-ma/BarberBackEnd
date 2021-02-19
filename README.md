@@ -1,39 +1,75 @@
-### Software prerequisites
+# API Documentation Example
+This API uses `POST` request to communicate and HTTP [response codes](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) to indenticate status and errors. All responses come in standard JSON. All requests must include a `content-type` of `application/json` and the body must be valid JSON.
 
-Install the below tools/packages
+## Response Codes 
+### Response Codes
+```
+200: Success
+400: Bad request
+401: Unauthorized
+404: Cannot be found
+405: Method not allowed
+422: Unprocessable Entity 
+50X: Server Error
+```
+### Error Codes Details
+```
+100: Bad Request
+110: Unauthorized
+120: User Authenticaion Invalid
+130: Parameter Error
+140: Item Missing
+150: Conflict
+160: Server Error
+```
+### Example Error Message
+```json
+http code 402
+{
+    "code": 120,
+    "message": "invalid crendetials",
+    "resolve": "The username or password is not correct."
+}
+```
 
-| Serial No   | Software           | Version   | Installation site |
-| :---------: | :----------------: | :-------: | :---------------- |
-| 1           | Node.js            | >= 6.9.1  | [Install NodeJS](https://nodejs.org/en/download/) |
-| 2           | npm                | >= 3.10.8 | [Install NPM](https://www.npmjs.com/get-npm)      |
-| 3           | react-native       | >= 0.51.0 | [Install react-native](https://www.npmjs.com/package/react-native) |
-| 4           | react-native-cli   | >= 2.0.1  | [Install react-native-cli](https://www.npmjs.com/package/react-native-cli) |
-| 5           | exp                | >= 47.1.1 | [Install Expo](https://www.npmjs.com/package/exp) |
+## Login
+**You send:**  Your  login credentials.
+**You get:** An `API-Token` with wich you can make further actions.
 
+**Request:**
+```json
+POST /login HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Content-Length: xy
 
-### Setup Instructions
+{
+    "username": "foo",
+    "password": "1234567" 
+}
+```
+**Successful Response:**
+```json
+HTTP/1.1 200 OK
+Server: My RESTful API
+Content-Type: application/json
+Content-Length: xy
 
-#### System setup
-1. Clone the repo with `git clone [REPO_URL]` command
-2. Switch to the project's root directory in terminal
-3. Install the dependencies by running `npm install`
-4. Once, 'npm install' is completed, run `exp start` to start the expo and react-native server
-5. If it shows a QR code on the terminal as a result of 'exp start' command, then you are good to go!
+{
+   "apitoken": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "expirationDate": "2018-02-13T15:31:55.559Z"
+}
+```
+**Failed Response:**
+```json
+HTTP/1.1 401 Unauthorized
+Server: My RESTful API
+Content-Type: application/json
+Content-Length: xy
 
-you can write your env specific config variables on `.env` file and import them from `react-native-dotenv` package as mentioned [here](https://github.com/zetachang/react-native-dotenv#usage).
-
-Ignore the first step on 'Mobile setup' instructions given below if you already have 'Expo' app installed on your phone.
-
-#### Mobile setup
-1. Install 'Expo' application on your android/iOS device. You can find the links to Android and iOS apps [here](https://expo.io/tools#client).
-2. Scan the QR code shown on the terminal.
-3. Once the QR code is successfully scanned, it will take few seconds to load and render the app.
-
-#### Linter git-hook setup
-1. Switch to the project's root directory in terminal
-2. Run the following command to copy the git hook from 'git-hooks' to '.git/hooks' directory
-  `cp git-hooks/pre-commit .git/hooks/`
-3. Run the following command to make the hook executable.
-  `chmod +x .git/hooks/pre-commit`
-
-**Note** This git hook runs everytime you commit. It won't let the developer commit the code if there is any eslint issue on the files changed.
+{
+    "code": 120,
+    "message": "invalid crendetials",
+    "resolve": "The username or password is not correct."
+}
+``` 
