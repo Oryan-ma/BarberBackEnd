@@ -15,11 +15,6 @@ namespace barberBackEnd.BLL
         public Barber RegisterBarber(Barber barber)
         {
             db.Insert2DB(barber);
-            foreach (Service service in barber.Services)
-            {
-                service.Barber_Email = barber.Email;
-            }
-            db.Insert2DB(barber.Services);
             return barber;
         }
 

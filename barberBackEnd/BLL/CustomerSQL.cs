@@ -11,6 +11,7 @@ namespace barberBackEnd.BLL
     {
         DBService db = new DBService();
 
+
         public Customer RegisterCustomer(Customer customer)
         {
             db.Insert2DB(customer);

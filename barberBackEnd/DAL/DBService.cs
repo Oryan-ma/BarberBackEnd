@@ -28,9 +28,9 @@ namespace barberBackEnd.DAL
             {
                 case Barber b:
                     b = type as Barber;
-                    command += $"Insert Into barber_tbl (Name,Last_Name,Customer_Gender,Phone,Password,Email) " +
+                    command += $"Insert Into barber_tbl (Name,Last_Name,Customer_Gender,city_Id,Phone,Password,Email) " +
                         $"values('{b.Name}','{b.Last_Name}','{b.Customer_Gender}'," +
-                        $"'{b.Phone}','{b.Password}', '{b.Email}')";
+                        $"'{b.City.Id}','{b.Phone}','{b.Password}', '{b.Email}')";
                     break;
                 case Customer c:
                     c = type as Customer;
@@ -38,30 +38,24 @@ namespace barberBackEnd.DAL
                         $"values('{c.Name}','{c.Last_Name}','{c.Gender}'," +
                         $"'{c.Phone}','{c.Password}', '{c.Email}')";
                     break;
-                case List<Service> s:
-                    if (s.Count > 0)
-                    {
-                        command += "insert into Services_tbl (Barber_Id,Service_Name,Service_Price) values";
-                        for (int i = 0; i < s.Count; i++)
-                        {
-                            command += $"('{s[i].Barber_Email}','{s[i].Service_Name}',{s[i].Service_Price}),";
-                        }
-                        command = command.Remove(command.Length - 1);
-                    }
-                    break;
-                case ShopQueue sq:
-                    sq = type as ShopQueue;
-                    command += $"insert into ShopQueue_tbl (Barber_Email, Customer_Email,time) values " +
-                        $"('{sq.Barber_Email}','{sq.Customer_Email}','{sq.time.ToString("yyyy-MM-dd HH:mm:ss.fff")}')";
-                    break;
+                case Queue q:
+                case City ci:
+
                 default:
                     break;
             }
+<<<<<<< HEAD
             ExeSQL(out con, out cmd, command);
+=======
+            con = CreateConnction();
+            cmd = CreateCommand(command, con);             // create the command
+            ExeSQLCommand(cmd, con);
+>>>>>>> parent of 7c9b016 (Merge branch 'main' of https://github.com/Oryan-ma/barberBackEnd into main)
 
             return 1;
         }
 
+<<<<<<< HEAD
        
 
         public List<ShopQueue> GetShopQueue()
@@ -121,6 +115,8 @@ namespace barberBackEnd.DAL
             //cmd = CreateCommand(command, con);
             //ExeSQLCommand(cmd, con);
         }
+=======
+>>>>>>> parent of 7c9b016 (Merge branch 'main' of https://github.com/Oryan-ma/barberBackEnd into main)
         public T Login<T>(T type)
         {
             SqlConnection con;
@@ -131,7 +127,7 @@ namespace barberBackEnd.DAL
                 case Barber b:
                     b = type as Barber;
                     query = $"select * " +
-                        $"from barber_tbl " +
+                        $"from barber_tbl b inner join city_tbl c on b.city_id=c.city_id " +
                         $"where Email='{b.Email}'";
                     break;
                 case Customer c:
@@ -141,23 +137,41 @@ namespace barberBackEnd.DAL
                 default:
                     break;
             }
+<<<<<<< HEAD
             SqlDataReader dr;
             QuerySQL(out con, out cmd, query, out dr);
+=======
+            con = CreateConnction();
+            cmd = new SqlCommand(query, con);
+>>>>>>> parent of 7c9b016 (Merge branch 'main' of https://github.com/Oryan-ma/barberBackEnd into main)
 
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
             switch (type)
             {
                 case Barber b:
                     b = new Barber();
                     if (dr.Read())
                     {   // Read till the end of the data into a row
-                        ReadBarber(dr, b);
+                        b.Name = (string)dr["Name"];
+                        b.Last_Name = (string)dr["Last_Name"];
+                        b.Customer_Gender = Convert.ToChar(dr["Customer_Gender"]);
+                        b.City = new City();
+                        b.City.Id = (string)dr["city_Id"];
+                        b.City.Name = (string)dr["city_name"];
+                        b.Password = (string)dr["Password"];
+                        b.Email = (string)dr["Email"];
                     }
                     return (T)Convert.ChangeType(b, typeof(T));
                 case Customer c:
                     c = new Customer();
                     if (dr.Read())
                     {   // Read till the end of the data into a row
-                        ReadCustomer(dr, c);
+                        c.Name = (string)dr["Name"];
+                        c.Last_Name = (string)dr["Last_Name"];
+                        c.Gender = Convert.ToChar(dr["Gender"]);
+                        c.Phone = (string)dr["Phone"];
+                        c.Password = (string)dr["Password"];
+                        c.Email = (string)dr["Email"];
                     }
                     return (T)Convert.ChangeType(c, typeof(T));
                 //break;
@@ -167,9 +181,10 @@ namespace barberBackEnd.DAL
 
 
             con.Close();
-            //cmd.Connection.Close();
+            cmd.Connection.Close();
             return type;
         }
+<<<<<<< HEAD
 
         public List<Service> GetServices(string email)
         {
@@ -244,6 +259,8 @@ namespace barberBackEnd.DAL
             // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
         }
 
+=======
+>>>>>>> parent of 7c9b016 (Merge branch 'main' of https://github.com/Oryan-ma/barberBackEnd into main)
         public static SqlConnection connect(String conString)
         {
             // read the connection string from the configuration file

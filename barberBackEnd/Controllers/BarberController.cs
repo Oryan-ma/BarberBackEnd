@@ -25,19 +25,19 @@ namespace barberBackEnd.Controllers
         }
 
         // POST api/<controller>
-        public Barber Post(Barber barber)
+        public void Post(Barber barber)
         {
-            return new BarberSQL().RegisterBarber(barber);
+        new BarberSQL().RegisterBarber(barber);
         }
         //LOGIN
         [HttpPost]
         [Route("api/barber/login")]
         public object Login([FromBody] Barber b)
         {
-            return new Login().LoginUser(b);
+          return  new Login().LoginUser(b);
         }
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody]string value)
         {
         }
 
