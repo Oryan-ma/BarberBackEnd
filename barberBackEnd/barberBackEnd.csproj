@@ -169,8 +169,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\QueueController.cs" />
+=======
+>>>>>>> parent of 7c9b016 (Merge branch 'main' of https://github.com/Oryan-ma/barberBackEnd into main)
 =======
 >>>>>>> parent of 7c9b016 (Merge branch 'main' of https://github.com/Oryan-ma/barberBackEnd into main)
 =======

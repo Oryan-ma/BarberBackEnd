@@ -58,6 +58,7 @@ namespace barberBackEnd.DAL
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
        
 
         public List<ShopQueue> GetShopQueue()
@@ -123,6 +124,8 @@ namespace barberBackEnd.DAL
 >>>>>>> parent of 7c9b016 (Merge branch 'main' of https://github.com/Oryan-ma/barberBackEnd into main)
 =======
 >>>>>>> parent of 7c9b016 (Merge branch 'main' of https://github.com/Oryan-ma/barberBackEnd into main)
+=======
+>>>>>>> parent of 7c9b016 (Merge branch 'main' of https://github.com/Oryan-ma/barberBackEnd into main)
         public T Login<T>(T type)
         {
             SqlConnection con;
@@ -146,8 +149,13 @@ namespace barberBackEnd.DAL
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             SqlDataReader dr;
             QuerySQL(out con, out cmd, query, out dr);
+=======
+            con = CreateConnction();
+            cmd = new SqlCommand(query, con);
+>>>>>>> parent of 7c9b016 (Merge branch 'main' of https://github.com/Oryan-ma/barberBackEnd into main)
 =======
             con = CreateConnction();
             cmd = new SqlCommand(query, con);
@@ -200,6 +208,7 @@ namespace barberBackEnd.DAL
             cmd.Connection.Close();
             return type;
         }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -277,6 +286,8 @@ namespace barberBackEnd.DAL
             // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
         }
 
+=======
+>>>>>>> parent of 7c9b016 (Merge branch 'main' of https://github.com/Oryan-ma/barberBackEnd into main)
 =======
 >>>>>>> parent of 7c9b016 (Merge branch 'main' of https://github.com/Oryan-ma/barberBackEnd into main)
 =======
