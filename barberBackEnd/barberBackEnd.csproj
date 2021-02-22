@@ -167,6 +167,7 @@
     <Compile Include="BLL\ShopQueueSQL.cs" />
     <Compile Include="Controllers\BarberController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="DAL\DBService.cs" />
     <Compile Include="Global.asax.cs">

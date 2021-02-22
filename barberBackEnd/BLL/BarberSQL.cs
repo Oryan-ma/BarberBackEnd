@@ -23,6 +23,14 @@ namespace barberBackEnd.BLL
             return barber;
         }
 
-        
+        public List<Barber> GetAllBarbers()
+        {
+            List<Barber> lb = db.GetAllBarbers();
+            foreach (Barber b in lb)
+            {
+                b.Services = db.GetServices(b.Email);//to chek
+            }
+            return lb;
+        }
     }
 }

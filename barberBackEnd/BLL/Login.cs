@@ -14,10 +14,6 @@ namespace barberBackEnd.BLL
         public T LoginUser<T>(T type)
         {
             string password = getPassword(type);
-
-           // T user = db.Login(type);
-
-
             if (type is Barber)
             {
                 Barber b = db.Login(type) as Barber;

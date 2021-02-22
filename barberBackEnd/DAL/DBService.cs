@@ -14,10 +14,10 @@ namespace barberBackEnd.DAL
         public SqlDataAdapter da;
         public DataTable dt;
 
-        public DBService()
-        {
+        //public DBService()
+        //{
 
-        }
+        //}
 
         public int Insert2DB<T>(T type)
         {
@@ -57,16 +57,13 @@ namespace barberBackEnd.DAL
                 default:
                     break;
             }
-            con = CreateConnction();
-            cmd = CreateCommand(command, con);
-            ExeSQLCommand(cmd, con);
+            ExeSQL(out con, out cmd, command);
 
             return 1;
         }
 
-      
+       
 
-        //to chek
         public List<ShopQueue> GetShopQueue()
         {
             SqlConnection con;
@@ -76,7 +73,7 @@ namespace barberBackEnd.DAL
             query = $"select * from ShopQueue_tbl order by time";
 
             SqlDataReader dr;
-            CallSQL(out con, out cmd, query, out dr);
+            QuerySQL(out con, out cmd, query, out dr);
             List<ShopQueue> s = new List<ShopQueue>();
 
             while (dr.Read())
@@ -89,8 +86,28 @@ namespace barberBackEnd.DAL
             //cmd.Connection.Close();
             return s;
         }
-        //todo
+        public List<Barber> GetAllBarbers()
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            string query = $"select Name, Last_Name, Customer_Gender, Email from Barber_tbl";
 
+            SqlDataReader dr;
+            QuerySQL(out con, out cmd, query, out dr);
+            List<Barber> bl = new List<Barber>();
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Barber b = new Barber();
+                b.Name = (string)dr["Name"];
+                b.Last_Name = (string)dr["Last_Name"];
+                b.Customer_Gender = Convert.ToChar(dr["Customer_Gender"]);
+                b.Email = (string)dr["Email"];
+                bl.Add(b);
+            }
+            con.Close();
+            //cmd.Connection.Close();
+            return bl;
+        }
         public void RemoveFromQueue(ShopQueue sq)
         {
             SqlConnection con;
@@ -99,18 +116,11 @@ namespace barberBackEnd.DAL
                 $"where Barber_Email = '{sq.Barber_Email}' and " +
                 $"Customer_Email = '{sq.Customer_Email}' and " +
                 $"time = '{sq.time.ToString("yyyy-MM-dd HH:mm:ss.fff")}'";
-            con = CreateConnction();
-            cmd = CreateCommand(command, con);
-            ExeSQLCommand(cmd, con);
-
+            ExeSQL(out con, out cmd, command);
+            //con = CreateConnction();
+            //cmd = CreateCommand(command, con);
+            //ExeSQLCommand(cmd, con);
         }
-        private static void ReadQueue(SqlDataReader dr, ShopQueue sq)
-        {
-            sq.Barber_Email = (string)dr["Barber_Email"];
-            sq.Customer_Email = (string)dr["Customer_Email"];
-            sq.time = (DateTime)dr["time"];
-        }
-
         public T Login<T>(T type)
         {
             SqlConnection con;
@@ -132,7 +142,7 @@ namespace barberBackEnd.DAL
                     break;
             }
             SqlDataReader dr;
-            CallSQL(out con, out cmd, query, out dr);
+            QuerySQL(out con, out cmd, query, out dr);
 
             switch (type)
             {
@@ -161,6 +171,44 @@ namespace barberBackEnd.DAL
             return type;
         }
 
+        public List<Service> GetServices(string email)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            string query = "";
+            query = $"select * " +
+                $"from barber_tbl b inner join Services_tbl s on b.Email= s.barber_Id " +
+            $"where Email='{email}'";
+
+            SqlDataReader dr;
+            QuerySQL(out con, out cmd, query, out dr);
+            List<Service> s = new List<Service>();
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Service ser = new Service();
+                ReadService(dr, ser);
+                s.Add(ser);
+            }
+            con.Close();
+            //cmd.Connection.Close();
+            return s;
+        }
+
+
+        #region Read
+        private static void ReadService(SqlDataReader dr, Service ser)
+        {
+            ser.Service_Name = (string)dr["Service_Name"];
+            ser.Service_Price = double.Parse(dr["Service_Price"].ToString());
+        }
+
+        private static void ReadQueue(SqlDataReader dr, ShopQueue sq)
+        {
+            sq.Barber_Email = (string)dr["Barber_Email"];
+            sq.Customer_Email = (string)dr["Customer_Email"];
+            sq.time = (DateTime)dr["time"];
+        }
+
         private static void ReadBarber(SqlDataReader dr, Barber b)
         {
             b.Name = (string)dr["Name"];
@@ -179,32 +227,16 @@ namespace barberBackEnd.DAL
             c.Password = (string)dr["Password"];
             c.Email = (string)dr["Email"];
         }
+        #endregion
 
-        public List<Service> GetServices(string email)
+        #region SQL
+        private void ExeSQL(out SqlConnection con, out SqlCommand cmd, string command)
         {
-            SqlConnection con;
-            SqlCommand cmd;
-            string query = "";
-            query = $"select * " +
-                $"from barber_tbl b inner join Services_tbl s on b.Email= s.barber_Id " +
-            $"where Email='{email}'";
-
-            SqlDataReader dr;
-            CallSQL(out con, out cmd, query, out dr);
-            List<Service> s = new List<Service>();
-            while (dr.Read())
-            {   // Read till the end of the data into a row
-                Service ser = new Service();
-                ser.Service_Name = (string)dr["Service_Name"];
-                ser.Service_Price = double.Parse(dr["Service_Price"].ToString());
-                s.Add(ser);
-            }
-            con.Close();
-            //cmd.Connection.Close();
-            return s;
+            con = CreateConnction();
+            cmd = CreateCommand(command, con);
+            ExeSQLCommand(cmd, con);
         }
-
-        private static void CallSQL(out SqlConnection con, out SqlCommand cmd, string query, out SqlDataReader dr)
+        private static void QuerySQL(out SqlConnection con, out SqlCommand cmd, string query, out SqlDataReader dr)
         {
             con = CreateConnction();
             cmd = new SqlCommand(query, con);
@@ -274,5 +306,6 @@ namespace barberBackEnd.DAL
 
             return cmd;
         }
+        #endregion
     }
 }

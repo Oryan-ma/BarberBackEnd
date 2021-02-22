@@ -13,9 +13,9 @@ namespace barberBackEnd.Controllers
     public class BarberController : ApiController
     {
         // GET api/<controller>
-        public IEnumerable<string> Get()
+        public List<Barber> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new BarberSQL().GetAllBarbers();
         }
 
         // GET api/<controller>/5
