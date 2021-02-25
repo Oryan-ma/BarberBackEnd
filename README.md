@@ -4,7 +4,7 @@ This API uses `POST` request to communicate and HTTP [response codes](https://en
 ## Response Codes 
 ### Response Codes
 ```
-200: Success
+200: Succes
 400: Bad request
 401: Unauthorized
 404: Cannot be found
